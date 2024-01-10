@@ -23,7 +23,7 @@ db.run(`CREATE TABLE IF NOT EXISTS books (
 
 //route to get all books
 app.get('/books', (req, res)=> {
-    db.all('SELECT * FROM books', (err, rows) => {
+    db.all('SELECT * FROM book', (err, rows) => {
         if (err) {
             res.status(500).send(err);
         }else{
@@ -34,7 +34,7 @@ app.get('/books', (req, res)=> {
 
 //route to get a book by id
 app.get('/books/:id', (req, res) => {
-    db.get('SELECT * FROM books WHERE id = ?', req.params.id, (err,row) => {
+    db.all('SELECT * FROM books WHERE id = ?', req.params.id, (err,row) => {
         if (err) {
             res.status(500).send(err);
         }else{
@@ -48,7 +48,7 @@ app.get('/books/:id', (req, res) => {
 });
 
 //route to update a book
-app.post('/books', (req, res) => {
+app.put('/books', (req, res) => {
     const book = req.body;
     db.run('INSERT INTO books (title, author) VALUES (?,?)', book.title, book.author, function(err){
         if (err) {
@@ -61,7 +61,7 @@ app.post('/books', (req, res) => {
 });
 
 //route to update a book
-app.put('/books/:id', (req, res) => {
+app.put('books/:id', (res, res) => {
     const book = req.body;
     db.run('UPDATE books SET title = ?, author = ? WHERE id = ?', book.title, book.author, req.params.id, function(err) {
         if (err) {
